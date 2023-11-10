@@ -120,3 +120,31 @@
 //       destinations = data[3]
 //   })
 // })
+
+// function displayPendingTrips() {
+//   // Filter trips with a status of "pending"
+// const pendingTrips = trips.filter(trip => trip.status === 'pending');
+
+// if (pendingTrips.length === 0) {
+//     // No pending trips found
+//   pendingTripsSection.innerHTML = '<p>No pending trips at the moment.</p>';
+// } else {
+//     // Create and append HTML elements for each pending trip
+//   const tripList = document.createElement('ul');
+//   tripList.classList.add('trip-list');
+
+//   pendingTrips.forEach(trip => {
+//   const tripItem = document.createElement('li');
+//   tripItem.innerHTML = `
+//       <h3>Trip to ${destinations.find(dest => dest.id === trip.destinationID).destination}</h3>
+//       <p>Date: ${trip.date}</p>
+//       <p>Duration: ${trip.duration} days</p>
+//       <p>Number of Travelers: ${trip.travelers}</p>
+//   `;
+
+//   tripList.appendChild(tripItem);
+//   });
+
+//   pendingTripsSection.appendChild(tripList);
+// }
+// }

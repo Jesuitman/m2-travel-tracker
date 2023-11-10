@@ -5,6 +5,12 @@
 // query Selectors
 const loginForm = document.getElementById("loginForm");
 const welcomeMessage = document.getElementById("welcomeMessage");
+const pendingTripsSection = document.querySelector('.pending-dashboard-section');
+const approvedTripsSection = document.querySelector('.approved-dashboard-section');
+const pastTripsSection = document.querySelector('.past-dashboard-section');
+const costsTripsSection = document.querySelector('.costs-dashboard-section');
+const dashboardTitle = document.querySelector('.dashboard-title')
+
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
@@ -12,7 +18,7 @@ import './css/styles.css';
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
 
-let travelerId = 1
+let travelerId = 2
 let travelers = [
     {
     id: 1,
@@ -24,10 +30,10 @@ let travelers = [
     name: "Rachael Vaughten",
     travelerType: "thrill-seeker"
     }]
-let singleTravler =  {
-    id: 1,
-    name: "Ham Leadbeater",
-    travelerType: "relaxer"
+let singleTravler ={
+    id: 2,
+    name: "Rachael Vaughten",
+    travelerType: "thrill-seeker"
     }
 let trips = [{
     id: 89,
@@ -36,7 +42,7 @@ let trips = [{
     travelers: 5,
     date: "2019/09/27",
     duration: 13,
-    status: "approved",
+    status: "past",
     suggestedActivities: []
     },
     {
@@ -46,7 +52,7 @@ let trips = [{
     travelers: 6,
     date: "2020/3/28",
     duration: 10,
-    status: "approved",
+    status: "pending",
     suggestedActivities: []
     },
     {
@@ -57,6 +63,16 @@ let trips = [{
     date: "2020/04/03",
     duration: 8,
     status: "approved",
+    suggestedActivities: []
+    },
+    {
+    id: 89,
+    userID: 1,
+    destinationID: 1,
+    travelers: 5,
+    date: "2019/09/27",
+    duration: 13,
+    status: "past",
     suggestedActivities: []
     }]
 let destinations = [{
@@ -85,4 +101,79 @@ let destinations = [{
     }]
 
 
+function displayTrips(userId,status) {
+    const tripsSection = document.querySelector(`.${status}-dashboard-section`);
+    
+    const filteredTrips = trips.filter(trip =>trip.userID === userId && trip.status === status);
+    
+    if (filteredTrips.length === 0) {
+        tripsSection.innerHTML = `<p>No ${status} trips at the moment.</p>`;
+    } else {
+        const tripList = document.createElement('ul');
+        tripList.classList.add('trip-list');
+        
+        filteredTrips.forEach(trip => {
+          const cost = calculateCostOfTrip(trip)
+        const tripItem = document.createElement('li');
+        tripItem.innerHTML = `
+        <h3>Trip to ${destinations.find(dest => dest.id === trip.destinationID).destination}</h3>
+        <p>Date: ${trip.date}</p>
+        <p>Duration: ${trip.duration} days</p>
+        <p>Number of Travelers: ${trip.travelers}</p>
+        <p>Cost of the Trip: ${cost} dollars</p>
+        `;
+        
+        tripList.appendChild(tripItem);
+    });
+    
+    tripsSection.innerHTML = ""
+    tripsSection.appendChild(tripList);
+    }
+  }
 
+  document.getElementById("userId").addEventListener("input", function(){
+    const userId = parseInt(this.value)
+    const userName = getUserNameById(userId)
+
+    dashboardTitle.textContent = `Hello ${userName}`
+
+    displayTrips(userId, "pending")
+    displayTrips(userId, "past")
+    displayTrips(userId, "approved")
+    updateCostBox(userId)
+})
+
+function calculateCostOfTrip(trip) {
+    const destination = destinations.find(dest => dest.id === trip.destinationID);
+    const travelers = trip.travelers;
+    const estimatedFlightCostPerPerson = destination.estimatedFlightCostPerPerson;
+    const estimatedLodgingCostPerDay = destination.estimatedLodgingCostPerDay;
+    const duration = trip.duration;
+    
+    const costOfTrip = (travelers * estimatedFlightCostPerPerson) + (travelers * estimatedLodgingCostPerDay * duration) * 1.1;
+    
+    return costOfTrip;
+  }
+
+  function calculateTotalCostForUser(userId) {
+    const userTrips = trips.filter(trip => trip.userID === userId);
+    let totalCost = 0;
+  
+    userTrips.forEach(trip => {
+      const costOfTrip = calculateCostOfTrip(trip);
+      totalCost += costOfTrip;
+    });
+  
+    return totalCost;
+  }
+
+  function updateCostBox(userId) {
+    const totalCost = calculateTotalCostForUser(userId);  
+
+    costsTripsSection.innerHTML = `<h3>Total Cost of Trips: $${totalCost}</h3>`;
+  }
+  
+function getUserNameById(userId) {
+    const user = travelers.find(traveler => traveler.id === userId)
+    return user.name
+}

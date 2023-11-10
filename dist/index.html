@@ -8,9 +8,22 @@
 </head>
 <body>
   <img src="./images/turing-logo.png" alt="turing logo">
-  
-  <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
-  <script src="bundle.js"></script>
+  <section class="login-form">
 
+    <h1 id="welcomeMessage">Welcome Travelers! Please log in</h1>
+    
+    <form id="loginForm">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      <br>
+      <button type="submit">Log In</button>
+    </section>
+    </form>
+    <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
+    <script src="bundle.js"></script>
+    
 </body>
 </html>

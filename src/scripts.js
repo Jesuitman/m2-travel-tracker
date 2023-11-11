@@ -1,20 +1,15 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
-// import { getTravellers,getSingleTraveler,getAllTrips,getAllDestinations } from './api-calls';
-
+import { fetchTravelers,fetchTrips,fetchDestinations,postNewTrip } from './api-calls';
+// import "./images/circus.mp3"
 // query Selectors
 const loginForm = document.getElementById("loginForm");
-const welcomeMessage = document.getElementById("welcomeMessage");
-const pendingTripsSection = document.querySelector('.pending-dashboard-section');
-const approvedTripsSection = document.querySelector('.approved-dashboard-section');
-const pastTripsSection = document.querySelector('.past-dashboard-section');
 const costsTripsSection = document.querySelector('.costs-dashboard-section');
 const dashboardTitle = document.querySelector('.dashboard-title')
-const destinationSelect = document.getElementById("destination");
 const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
-
+const audio = new Audio("circus.mp3")
 function showElement(element) {
     element.style.display = "block";
 }
@@ -36,131 +31,30 @@ import './css/styles.css';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+function fetchAllData(){
+    Promise.all([fetchTravelers(),fetchTrips(),fetchDestinations()])
+    .then(([travelersData, tripsData, destinationsData]) =>{
+        travelers = travelersData
+        trips = tripsData
+        destinations = destinationsData
+    })
+}
+document.addEventListener("DOMContentLoaded", fetchAllData)
 
-document.addEventListener("DOMContentLoaded", () =>{
-    fetch("http://localhost:3001/api/v1/travelers")
-        .then ((response) => response.json())
-        .then ((data) => {
-            travelers = data.travelers
-        })
-
-    fetch("http://localhost:3001/api/v1/trips")
-        .then ((response) => response.json())
-        .then ((data) => {
-            trips = data.trips
-        })
-    fetch("http://localhost:3001/api/v1/destinations")
-        .then((response) => response.json())
-        .then((data) =>{
-            destinations = data
-        })
-})
-
-
-
-
-
-// let userId = 1
-// let travelers = [
-//     {
-//     id: 1,
-//     name: "Ham Leadbeater",
-//     travelerType: "relaxer"
-//     },
-//     {
-//     id: 2,
-//     name: "Rachael Vaughten",
-//     travelerType: "thrill-seeker"
-// }]
-
-// let singleTravler ={
-//     id: 2,
-//     name: "Rachael Vaughten",
-//     travelerType: "thrill-seeker"
-// }
-
-// let trips = [{
-//     id: 89,
-//     userID: 2,
-//     destinationID: 1,
-//     travelers: 5,
-//     date: "2019/09/27",
-//     duration: 13,
-//     status: "past",
-//     suggestedActivities: []
-//     },
-//     {
-//     id: 100,
-//     userID: 2,
-//     destinationID: 2,
-//     travelers: 6,
-//     date: "2020/3/28",
-//     duration: 10,
-//     status: "pending",
-//     suggestedActivities: []
-//     },
-//     {
-//     id: 116,
-//     userID: 2,
-//     destinationID: 3,
-//     travelers: 3,
-//     date: "2020/04/03",
-//     duration: 8,
-//     status: "approved",
-//     suggestedActivities: []
-//     },
-//     {
-//     id: 89,
-//     userID: 1,
-//     destinationID: 1,
-//     travelers: 5,
-//     date: "2019/09/27",
-//     duration: 13,
-//     status: "past",
-//     suggestedActivities: []
-// }]
-
-// let destinations = [{
-//     id: 1,
-//     destination: "Lima, Peru",
-//     estimatedLodgingCostPerDay: 70,
-//     estimatedFlightCostPerPerson: 400,
-//     image: "https://images.unsplash.com/photo-1489171084589-9b5031ebcf9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2089&q=80",
-//     alt: "overview of city buildings with a clear sky"
-//     },
-//     {
-//     id: 2,
-//     destination: "Stockholm, Sweden",
-//     estimatedLodgingCostPerDay: 100,
-//     estimatedFlightCostPerPerson: 780,
-//     image: "https://images.unsplash.com/photo-1560089168-6516081f5bf1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-//     alt: "city with boats on the water during the day time"
-//     },
-//     {
-//     id: 3,
-//     destination: "Sydney, Austrailia",
-//     estimatedLodgingCostPerDay: 130,
-//     estimatedFlightCostPerPerson: 950,
-//     image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-//     alt: "opera house and city buildings on the water with boats"
-// }]
-
-
+audio.play
 function displayTrips(userId, status) {
+    fetchAllData()
     const tripsSection = document.querySelector(`.${status}-inner-dashboard-section`);
-
-    fetch(`http://localhost:3001/api/v1/trips?userId=${userId}&status=${status}`)
-        .then((response) => response.json())
-        .then((data) => {
-            // Filter the trips based on the userId and status
-            const filteredTrips = data.trips.filter((trip) => trip.userID === userId && trip.status === status);
-
-            if (filteredTrips.length === 0) {
-                tripsSection.innerHTML = `<p>No ${status} trips at the moment.</p>`;
-            } else {
-                const tripList = document.createElement('ul');
-                tripList.classList.add('trip-list');
-
+    
+    
+    const filteredTrips = trips.filter((trip) => trip.userID === userId && trip.status === status);
+    
+    if (filteredTrips.length === 0) {
+        tripsSection.innerHTML = `<p>No ${status} trips at the moment.</p>`;
+    } else {
+        const tripList = document.createElement('ul');
+        tripList.classList.add('trip-list');
+        
                 filteredTrips.forEach((trip) => {
                     const cost = calculateCostOfTrip(trip);
                     const tripItem = document.createElement('li');
@@ -178,8 +72,8 @@ function displayTrips(userId, status) {
                 tripsSection.innerHTML = "";
                 tripsSection.appendChild(tripList);
             }
-        });
-}
+        };
+
 
 document.getElementById("loginForm").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -192,7 +86,6 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
         return
     }
     userId = parseInt(username.match(/\d+/)[0]);
-    // Instead of using a separate auth endpoint, use the traveler endpoint with the userId
     fetch(`http://localhost:3001/api/v1/travelers/${userId}`, {
         method: "GET",
     })
@@ -211,21 +104,13 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
             dashboardTitle.textContent = `Hello ${data.name}!`;
 
-            displayTrips(userId, "pending");
-            displayTrips(userId, "past");
-            displayTrips(userId, "approved");
-            updateCostBox(userId);
+            displayAllTripData(userId)
         })
         .catch((error) => {
-            alert(error.message);
+            console.log(error);
         });
 });
-function calculateCostOfTrip(trip) {
-    fetch("http://localhost:3001/api/v1/destinations")
-    .then((response) => response.json())
-    .then((data) =>{
-        destinations = data.destinations
-    })
+export function calculateCostOfTrip(trip) {
     const destination = destinations.find(dest => dest.id === trip.destinationID);
     const travelers = trip.travelers;
     const estimatedFlightCostPerPerson = destination.estimatedFlightCostPerPerson;
@@ -237,7 +122,7 @@ function calculateCostOfTrip(trip) {
     return costOfTrip;
 }
 
-function calculateTotalCostForUser(userId) {
+export function calculateTotalCostForUser(userId) {
     const userTrips = trips.filter(trip => trip.userID === userId);
     let totalCost = 0;
   
@@ -284,24 +169,19 @@ document.getElementById("newTripForm").addEventListener("submit", function (even
         suggestedActivities: [],
     };
 
-    fetch("http://localhost:3001/api/v1/trips", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newTrip),
-    })
-        .then((response) => response.json())
-        .then((data) => {
+        postNewTrip(newTrip)
+        .then((newTrip) => {
+            trips.push(newTrip);
+            fetchAllData()
+            displayTrips(userId,"pending")
             // const estimatedCost = calculateCostOfTrip(data);
-            trips.push(data);
-
+    
             // alert(`Estimated Cost for the Trip: $${estimatedCost}`);
-            displayTrips(userId, "pending");
-            updateCostBox(userId);
             event.target.reset();
             hideElement(tripForm);
             showDashboard();
+        
+
         });
 });
 
@@ -325,6 +205,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function formatTripDate(date) {
     const parts = date.split("-");
-    return `${parts[0]}/${parts[1]}/${parts[2]}`;
-    
+    return `${parts[0]}/${parts[1]}/${parts[2]}`;  
+}
+
+function displayAllTripData(userId){
+    displayTrips(userId,"approved")
+    displayTrips(userId,"pending")
+    displayTrips(userId,"past")
+    updateCostBox(userId)
 }

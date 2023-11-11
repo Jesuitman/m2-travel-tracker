@@ -55,22 +55,44 @@ img {
   padding: 10px;
 }
 
-/* Additional styling for the sections */
-/* this is past trips */
 .past-dashboard-section{
-  background-color: #f8d200; /* Pending trips */
+  background-color: #f8d200; 
 }
 
-/* this is pending section */
 .pending-dashboard-section{
-  background-color: #00cc5a; /* Approved trips */
+  background-color: #00cc5a; 
 }
 
-/* this is approved section */
 .approved-dashboard-section{
-  background-color: #ff4c52; /* Costs */
+  background-color: #ff4c52; 
 }
-/* this is the cost section */
+
 .costs-dashboard-section{
-  background-color: #954e50; /* Costs */
+  background-color: #954e50; 
+}
+
+#scheduleTripButton {
+  background-color: orange;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s, background-color 0.3s;
+  position: fixed;
+  top: 2px;
+  right: 2px;
+}
+
+
+#scheduleTripButton:hover {
+  transform: scale(1.1);
+  background-color: yellow;
+}
+
+.hidden {
+  display: none;
+}
+
+#tripForm{
+  display:none
 }

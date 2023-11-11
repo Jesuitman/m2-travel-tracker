@@ -8,9 +8,57 @@
 </head>
 <body>
   <img src="./images/turing-logo.png" alt="turing logo">
-  
-  <!-- Do not include the scripts.js or class files here - it is done by the webpack server -->
-  <script src="bundle.js"></script>
+  <section class="dashboard">
+    <h2 class="dashboard-title">Hello User!</h2>
+    <div class="pending-dashboard-section">
+      <h3 class="section-title">Pending Trips</h3>
+      <div class="pending-inner-dashboard-section"></div>
+  </div>
+  <div class="approved-dashboard-section">
+      <h3 class="section-title">Approved Trips</h3>
+      <div class="approved-inner-dashboard-section"></div>
+  </div>
+  <div class="past-dashboard-section">
+      <h3 class="section-title">Past Trips</h3>
+      <div class="past-inner-dashboard-section"></div>
+  </div>
+    <div class="costs-dashboard-section">Costs</div>
+    <button id="scheduleTripButton">Schedule New Trip</button>
+  </section>
+  <form id="newTripForm">
+    <label>Date:
+      <input type="date" id="tripDate" name="tripDate" required>
+    </label>
+    <br>
+    <label>Duration (days):
+      <input type="number" id="tripDuration" name="tripDuration" required>
+    </label>
+    <br>
+    <label>Number of Travelers:
+      <input type="number" id="travelers" name="travelers" required>
+    </label>
+    <br>
+    <label for="destination">Choose a Destination:</label>
+      <select id="destination" name="destination" required>
+        <option value="" disabled selected>Select a destination</option>
+      </select>
+    <br>
+    <button type="submit">Submit Trip Request</button>
+  </form>
+  <section class="login-form">
 
+    <form id="loginForm">
+      <h1 id="welcomeMessage">Welcome Travelers! Please log in</h1>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter your username" required>
+      <br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      <br>
+      <button type="submit">Log In</button>
+    </form>
+    </section>
+    <script src="bundle.js"></script>
+    
 </body>
 </html>

@@ -16,11 +16,15 @@ const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
 
 function showElement(element) {
-    element.classList.remove("hidden");
+    element.style.display = "block";
+}
+
+function showDashboard(){
+    dashboard.style.display = "grid"
 }
 
 function hideElement(element) {
-    element.classList.add("hidden");
+    element.style.display = "none";
 }
 
 
@@ -146,17 +150,29 @@ function displayTrips(userId,status) {
     }
 }
 
-document.getElementById("userId").addEventListener("input", function(){
-    userId = parseInt(this.value)
-    const userName = getUserNameById(userId)
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+  
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+  
+    if (password === "travel" && /^travel[1-9][0-9]?$/.test(username)) {
+      userId = parseInt(username.match(/\d+/)[0]);
+      
+      hideElement(loginForm)
+      showDashboard()
 
-    dashboardTitle.textContent = `Hello ${userName}`
-
-    displayTrips(userId, "pending")
-    displayTrips(userId, "past")
-    displayTrips(userId, "approved")
-    updateCostBox(userId)
-})
+    let userTrueName = getUserNameById(userId)
+      dashboardTitle.textContent = `Hello ${userTrueName}!`;
+  
+      displayTrips(userId, "pending");
+      displayTrips(userId, "past");
+      displayTrips(userId, "approved");
+      updateCostBox(userId);
+    } else {
+      alert("Invalid username or password. Please try again.");
+    }
+  });
 
 function calculateCostOfTrip(trip) {
     const destination = destinations.find(dest => dest.id === trip.destinationID);
@@ -220,12 +236,12 @@ document.getElementById("newTripForm").addEventListener("submit", function (even
   
     alert(`Estimated Cost for the Trip: $${estimatedCost}`);
     displayTrips(userId, "pending");
-  
+    updateCostBox(userId)
     event.target.reset();
     hideElement(tripForm)
-    showElement(dashboard)
+    showDashboard()
 });
-  
+
 document.addEventListener("DOMContentLoaded", () => {
     const destinationSelect = document.getElementById("destination");
     destinationSelect.innerHTML = destinations

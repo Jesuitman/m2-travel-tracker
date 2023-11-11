@@ -1,5 +1,6 @@
 body {
   background-color: aqua;
+  font-family: "Comic Sans MS", cursive;
 }
 
 img {
@@ -15,10 +16,6 @@ img {
   transform: translate(-50%, -50%);
 }
 
-#welcomeMessage {
-  font-family: "Comic Sans MS", cursive;
-}
-
 .dashboard {
   width: 75%;
   height: 95vh; /* 95% of the viewport height */
@@ -30,6 +27,7 @@ img {
   grid-template-columns: repeat(2, 1fr); /* Equal width columns */
   grid-template-rows: repeat(2, 1fr); /* Equal height rows */
   gap: 5%; /* Adjust the gap between sections */
+  display: none;
 }
 
 .dashboard-title {
@@ -72,8 +70,8 @@ img {
 }
 
 #scheduleTripButton {
-  background-color: orange;
-  color: white;
+  background-color: lightgray;
+  color: black;
   padding: 10px 20px;
   border: none;
   cursor: pointer;
@@ -86,13 +84,14 @@ img {
 
 #scheduleTripButton:hover {
   transform: scale(1.1);
-  background-color: yellow;
+  background-color: darkgray;
+  color: white;
 }
 
 .hidden {
   display: none;
 }
 
-#tripForm{
+#newTripForm{
   display:none
 }

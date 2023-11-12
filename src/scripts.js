@@ -220,7 +220,8 @@ function displayAllTripData(userId){
 }
 let randomFontSize
 function clownMode() {
-    document.body.style.cursor = 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewport=\'0 0 32 32\' version=\'1.1\'><text x=\'0\' y=\'16\' font-size=\'16\'>&#x1F921;</text></svg>"), auto';
+    document.documentElement.style.cursor = 'wait';
+    document.body.style.cursor = 'wait';
     // clownMusic.play(); 
     document.body.style.backgroundColor = 'purple';
     

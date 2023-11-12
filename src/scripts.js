@@ -1,19 +1,28 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
-// import { getTravellers,getSingleTraveler,getAllTrips,getAllDestinations } from './api-calls';
-
+import { fetchTravelers,fetchTrips,fetchDestinations,postNewTrip } from './api-calls';
 // query Selectors
 const loginForm = document.getElementById("loginForm");
-const welcomeMessage = document.getElementById("welcomeMessage");
-const pendingTripsSection = document.querySelector('.pending-dashboard-section');
-const approvedTripsSection = document.querySelector('.approved-dashboard-section');
-const pastTripsSection = document.querySelector('.past-dashboard-section');
 const costsTripsSection = document.querySelector('.costs-dashboard-section');
 const dashboardTitle = document.querySelector('.dashboard-title')
-const destinationSelect = document.getElementById("destination");
 const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
+const clownMusic = new Audio("./images/circus.wav")
+const tone = new Audio("./images/tone.wav")
+const clowns = ["./images/sadclown.png","./images/sadclown2.png",
+"./images/sadclown3.png","./images/sadclown4.png",
+"./images/sadclown5.png","./images/sadclown6.png"]
+
+import "./images/circus.wav"
+import "./images/tone.wav"
+import './images/turing-logo.png'
+import './images/sadclown.png'
+import './images/sadclown2.png'
+import './images/sadclown3.png'
+import './images/sadclown4.png'
+import './images/sadclown5.png'
+import './images/sadclown6.png'
 
 function showElement(element) {
     element.style.display = "block";
@@ -26,104 +35,33 @@ function showDashboard(){
 function hideElement(element) {
     element.style.display = "none";
 }
-
+let travelers
+let userId
+let trips
+let destinations = []
+let randomFontSize
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
 
-let userId = 1
-let travelers = [
-    {
-    id: 1,
-    name: "Ham Leadbeater",
-    travelerType: "relaxer"
-    },
-    {
-    id: 2,
-    name: "Rachael Vaughten",
-    travelerType: "thrill-seeker"
-}]
-
-let singleTravler ={
-    id: 2,
-    name: "Rachael Vaughten",
-    travelerType: "thrill-seeker"
+function fetchAllData(){
+    Promise.all([fetchTravelers(),fetchTrips(),fetchDestinations()])
+    .then(([travelersData, tripsData, destinationsData]) =>{
+        travelers = travelersData
+        trips = tripsData
+        destinations = destinationsData
+    })
 }
+document.addEventListener("DOMContentLoaded", fetchAllData)
 
-let trips = [{
-    id: 89,
-    userID: 2,
-    destinationID: 1,
-    travelers: 5,
-    date: "2019/09/27",
-    duration: 13,
-    status: "past",
-    suggestedActivities: []
-    },
-    {
-    id: 100,
-    userID: 2,
-    destinationID: 2,
-    travelers: 6,
-    date: "2020/3/28",
-    duration: 10,
-    status: "pending",
-    suggestedActivities: []
-    },
-    {
-    id: 116,
-    userID: 2,
-    destinationID: 3,
-    travelers: 3,
-    date: "2020/04/03",
-    duration: 8,
-    status: "approved",
-    suggestedActivities: []
-    },
-    {
-    id: 89,
-    userID: 1,
-    destinationID: 1,
-    travelers: 5,
-    date: "2019/09/27",
-    duration: 13,
-    status: "past",
-    suggestedActivities: []
-}]
-
-let destinations = [{
-    id: 1,
-    destination: "Lima, Peru",
-    estimatedLodgingCostPerDay: 70,
-    estimatedFlightCostPerPerson: 400,
-    image: "https://images.unsplash.com/photo-1489171084589-9b5031ebcf9b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2089&q=80",
-    alt: "overview of city buildings with a clear sky"
-    },
-    {
-    id: 2,
-    destination: "Stockholm, Sweden",
-    estimatedLodgingCostPerDay: 100,
-    estimatedFlightCostPerPerson: 780,
-    image: "https://images.unsplash.com/photo-1560089168-6516081f5bf1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-    alt: "city with boats on the water during the day time"
-    },
-    {
-    id: 3,
-    destination: "Sydney, Austrailia",
-    estimatedLodgingCostPerDay: 130,
-    estimatedFlightCostPerPerson: 950,
-    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
-    alt: "opera house and city buildings on the water with boats"
-}]
-
-
-function displayTrips(userId,status) {
+function displayTrips(userId, status) {
+    fetchAllData()
     const tripsSection = document.querySelector(`.${status}-inner-dashboard-section`);
     
-    const filteredTrips = trips.filter(trip =>trip.userID === userId && trip.status === status);
+    
+    const filteredTrips = trips.filter((trip) => trip.userID === userId && trip.status === status);
     
     if (filteredTrips.length === 0) {
         tripsSection.innerHTML = `<p>No ${status} trips at the moment.</p>`;
@@ -131,50 +69,65 @@ function displayTrips(userId,status) {
         const tripList = document.createElement('ul');
         tripList.classList.add('trip-list');
         
-    filteredTrips.forEach(trip => {
-        const cost = calculateCostOfTrip(trip)
-        const tripItem = document.createElement('li');
-        tripItem.innerHTML = `
-        <h3>Trip to ${destinations.find(dest => dest.id === trip.destinationID).destination}</h3>
-        <p>Date: ${trip.date}</p>
-        <p>Duration: ${trip.duration} days</p>
-        <p>Number of Travelers: ${trip.travelers}</p>
-        <p>Cost of the Trip: ${cost} dollars</p>
-        `;
-        
-        tripList.appendChild(tripItem);
-    });
-    
-    tripsSection.innerHTML = ""
-    tripsSection.appendChild(tripList);
-    }
-}
+                filteredTrips.forEach((trip) => {
+                    const cost = calculateCostOfTrip(trip);
+                    const tripItem = document.createElement('li');
+                    tripItem.innerHTML = `
+                        <h3>Trip to ${destinations.find(dest => dest.id === trip.destinationID).destination}</h3>
+                        <p>Date: ${trip.date}</p>
+                        <p>Duration: ${trip.duration} days</p>
+                        <p>Number of Travelers: ${trip.travelers}</p>
+                        <p>Cost of the Trip: ${cost} dollars</p>
+                    `;
+
+                    tripList.appendChild(tripItem);
+                });
+
+                tripsSection.innerHTML = "";
+                tripsSection.appendChild(tripList);
+            }
+        };
+
 
 document.getElementById("loginForm").addEventListener("submit", function (event) {
     event.preventDefault();
-  
+
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-  
-    if (password === "travel" && /^travel[1-9][0-9]?$/.test(username)) {
-      userId = parseInt(username.match(/\d+/)[0]);
-      
-      hideElement(loginForm)
-      showDashboard()
-
-    let userTrueName = getUserNameById(userId)
-      dashboardTitle.textContent = `Hello ${userTrueName}!`;
-  
-      displayTrips(userId, "pending");
-      displayTrips(userId, "past");
-      displayTrips(userId, "approved");
-      updateCostBox(userId);
-    } else {
-      alert("Invalid username or password. Please try again.");
+    if (username === "clown") {
+        return clownMode();
     }
-  });
 
-function calculateCostOfTrip(trip) {
+    if (password !== "travel"){
+        alert("Invalid password, please use 'travel' as your password to continue")
+        return
+    }
+    userId = parseInt(username.match(/\d+/)[0]);
+    fetch(`http://localhost:3001/api/v1/travelers/${userId}`, {
+        method: "GET",
+    })
+        .then((response) => {
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                throw new Error("Invalid username or password.");
+            }
+        })
+        .then((data) => {
+            userId = data.id;
+
+            hideElement(loginForm);
+            showDashboard();
+
+            dashboardTitle.textContent = `Hello ${data.name}!`;
+
+            displayAllTripData(userId)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+});
+export function calculateCostOfTrip(trip) {
     const destination = destinations.find(dest => dest.id === trip.destinationID);
     const travelers = trip.travelers;
     const estimatedFlightCostPerPerson = destination.estimatedFlightCostPerPerson;
@@ -186,8 +139,8 @@ function calculateCostOfTrip(trip) {
     return costOfTrip;
 }
 
-function calculateTotalCostForUser(userId) {
-    const userTrips = trips.filter(trip => trip.userID === userId);
+export function calculateTotalCostForUser(userId) {
+    const userTrips = trips.filter(trip => trip.userID === userId && isTripInYear(trip, 2023));
     let totalCost = 0;
   
     userTrips.forEach(trip => {
@@ -198,15 +151,15 @@ function calculateTotalCostForUser(userId) {
     return totalCost;
 }
 
+export function isTripInYear(trip, year) {
+    const tripDate = new Date(trip.date);
+    return tripDate.getFullYear() === year;
+}
+
 function updateCostBox(userId) {
     const totalCost = calculateTotalCostForUser(userId);  
 
     costsTripsSection.innerHTML = `<h3>Total Cost of Trips: $${totalCost}</h3>`;
-}
-  
-function getUserNameById(userId) {
-    const user = travelers.find(traveler => traveler.id === userId)
-    return user.name
 }
 
 newTripButton.addEventListener("click", () => {
@@ -216,37 +169,98 @@ newTripButton.addEventListener("click", () => {
 
 document.getElementById("newTripForm").addEventListener("submit", function (event) {
     event.preventDefault();
-    const tripDate = document.getElementById("tripDate").value;
+    const tripDateInput = document.getElementById("tripDate")
+    const tripDate = formatTripDate(tripDateInput.value)
     const tripDuration = parseInt(document.getElementById("tripDuration").value);
     const numTravelers = parseInt(document.getElementById("travelers").value);
     const selectedDestinationId = parseInt(document.getElementById("destination").value);
-    
+
     const newTrip = {
-        id: trips.length + 1, 
+        id: trips.length+1,
         userID: userId,
         destinationID: selectedDestinationId,
         travelers: numTravelers,
         date: tripDate,
         duration: tripDuration,
         status: "pending",
-        suggestedActivities: []
+        suggestedActivities: [],
     };
-    const estimatedCost = calculateCostOfTrip(newTrip)
-    trips.push(newTrip);
-  
-    alert(`Estimated Cost for the Trip: $${estimatedCost}`);
-    displayTrips(userId, "pending");
-    updateCostBox(userId)
-    event.target.reset();
-    hideElement(tripForm)
-    showDashboard()
+
+        postNewTrip(newTrip)
+        .then((newTrip) => {
+            trips.push(newTrip);
+            displayAllTripData(userId)
+            // const estimatedCost = calculateCostOfTrip(data);
+    
+            // alert(`Estimated Cost for the Trip: $${estimatedCost}`);
+            event.target.reset();
+            hideElement(tripForm);
+            showDashboard();
+        
+
+        });
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    const destinationSelect = document.getElementById("destination");
-    destinationSelect.innerHTML = destinations
-    .map((destination) => {
-        return `<option value="${destination.id}">${destination.destination}</option>`;
-    })
-    .join("");
+    fetch("http://localhost:3001/api/v1/destinations")
+        .then((response) => response.json())
+        .then((data) => {
+            destinations = data.destinations;
+            
+            const destinationSelect = document.getElementById("destination");
+            destinationSelect.innerHTML = destinations
+                .map((destination) => {
+                    return `<option value="${destination.id}">${destination.destination}</option>`;
+                })
+                .join("");
+        })
+        .catch((error) => {
+            console.error("Failed to fetch destinations:", error);
+        });
 });
+
+export function formatTripDate(date) {
+    const parts = date.split("-");
+    return `${parts[0]}/${parts[1]}/${parts[2]}`;  
+}
+
+function displayAllTripData(userId){
+    displayTrips(userId,"approved")
+    displayTrips(userId,"pending")
+    displayTrips(userId,"past")
+    updateCostBox(userId)
+}
+
+function clownMode() {
+    document.documentElement.style.cursor = 'wait';
+    document.body.style.cursor = 'wait';
+    document.body.style.backgroundColor = 'purple';
+    
+    playClownMusic()
+    setInterval(playClownMusic, 1)
+
+    setInterval(setRandomBackground, 200);
+    setInterval(setRandomFontSizeAndColor, 500);
+}
+
+function setRandomFontSizeAndColor() {
+    const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, li');
+    const randomFontSize = Math.floor(Math.random() * 36) + 5;
+
+    allTextElements.forEach((element) => {
+        element.style.fontSize = `${randomFontSize}px`;
+        const randomColor = Math.random() < 0.5 ? 'hotpink' : 'purple';
+        element.style.color = randomColor;
+    });
+}
+
+function playClownMusic(){
+    clownMusic.play()
+    tone.play()
+}
+
+function setRandomBackground() {
+    const randomImage = clowns[Math.floor(Math.random() * clowns.length)];
+
+    document.body.style.backgroundImage = `url('${randomImage}')`;
+}

@@ -1,7 +1,7 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
 import { fetchTravelers,fetchTrips,fetchDestinations,postNewTrip } from './api-calls';
-// import "./images/circus.mp3"
+import "./images/circus.wav"
 // query Selectors
 const loginForm = document.getElementById("loginForm");
 const costsTripsSection = document.querySelector('.costs-dashboard-section');
@@ -9,7 +9,8 @@ const dashboardTitle = document.querySelector('.dashboard-title')
 const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
-const audio = new Audio("circus.mp3")
+const clownMusic = new Audio("./images/circus.wav")
+
 function showElement(element) {
     element.style.display = "block";
 }
@@ -41,7 +42,7 @@ function fetchAllData(){
 }
 document.addEventListener("DOMContentLoaded", fetchAllData)
 
-audio.play
+
 function displayTrips(userId, status) {
     fetchAllData()
     const tripsSection = document.querySelector(`.${status}-inner-dashboard-section`);
@@ -73,7 +74,7 @@ function displayTrips(userId, status) {
                 tripsSection.appendChild(tripList);
             }
         };
-
+   clownMusic.play
 
 document.getElementById("loginForm").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -83,6 +84,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
     if (password !== "travel"){
         alert("Invalid password, please use 'travel' as your password to continue")
+     
         return
     }
     userId = parseInt(username.match(/\d+/)[0]);
@@ -172,8 +174,7 @@ document.getElementById("newTripForm").addEventListener("submit", function (even
         postNewTrip(newTrip)
         .then((newTrip) => {
             trips.push(newTrip);
-            fetchAllData()
-            displayTrips(userId,"pending")
+            displayAllTripData(userId)
             // const estimatedCost = calculateCostOfTrip(data);
     
             // alert(`Estimated Cost for the Trip: $${estimatedCost}`);

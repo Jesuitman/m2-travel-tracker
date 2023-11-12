@@ -1,12 +1,41 @@
 import chai from 'chai';
 const expect = chai.expect;
-import {calculateCostOfTrip} from "./src/scripts.js"
-
+// import {calculateCostOfTrip} from "./scripts.js"
+// const {calculateCostOfTrip,calculateTotalCostForUser} = require  ("./scripts.js") 
 describe('See if the tests are running', function() {
   it('should return true', function() {
     expect(true).to.equal(true);
   });
 });
+export function calculateCostOfTrip(trip) {
+  const destination = destinations.find(dest => dest.id === trip.destinationID);
+  const travelers = trip.travelers;
+  const estimatedFlightCostPerPerson = destination.estimatedFlightCostPerPerson;
+  const estimatedLodgingCostPerDay = destination.estimatedLodgingCostPerDay;
+  const duration = trip.duration;
+  
+  const costOfTrip = (travelers * estimatedFlightCostPerPerson) + (travelers * estimatedLodgingCostPerDay * duration) * 1.1;
+  
+  return costOfTrip;
+}
+
+export function calculateTotalCostForUser(userId) {
+  const userTrips = trips.filter(trip => trip.userID === userId);
+  let totalCost = 0;
+
+  userTrips.forEach(trip => {
+      const costOfTrip = calculateCostOfTrip(trip);
+      totalCost += costOfTrip;
+  });
+
+  return totalCost;
+}
+
+function formatTripDate(date) {
+  const parts = date.split("-");
+  return `${parts[0]}/${parts[1]}/${parts[2]}`;  
+}
+
 let userId = 1
 let travelers = [{
     id: 1,
@@ -90,3 +119,59 @@ let destinations = [{
     image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
     alt: "opera house and city buildings on the water with boats"
 }]
+describe('calculateCostOfTrip', function() {
+  let destination, trip;
+
+  beforeEach(function() {
+    destination = destinations[0]; 
+    trip = trips[0]; 
+  });
+
+  it('should calculate the cost of a trip correctly', function() {
+    const cost = calculateCostOfTrip(trip);
+    const expectedCost = (
+      trip.travelers *
+      destination.estimatedFlightCostPerPerson +
+      trip.travelers *
+      destination.estimatedLodgingCostPerDay *
+      trip.duration *
+      1.1
+    );
+    expect(cost).to.equal(expectedCost);
+  });
+});
+
+describe('calculateTotalCostForUser', function() {
+  it('should calculate the total cost for a user correctly', function() {
+    const userId = 2; 
+    const userTrips = trips.filter(trip => trip.userID === userId);
+    const expectedTotalCost = userTrips.reduce((total, trip) => {
+      return total + calculateCostOfTrip(trip);
+    }, 0);
+
+    const totalCost = calculateTotalCostForUser(userId);
+
+    expect(totalCost).to.equal(expectedTotalCost);
+  });
+
+  it('should return 0 for a user with no trips', function() {
+    const userId = 3; 
+    const totalCost = calculateTotalCostForUser(userId);
+
+    expect(totalCost).to.equal(0);
+  });
+});
+
+describe('formatTripDate', function() {
+  it('should format a date with hyphens correctly', function() {
+    const date = '2023-11-11';
+    const formattedDate = formatTripDate(date);
+    expect(formattedDate).to.equal('2023/11/11');
+  });
+
+  it('should format a date with slashes correctly', function() {
+    const date = '2023/11/11';
+    const formattedDate = formatTripDate(date);
+    expect(formattedDate).to.equal('2023/11/11/undefined/undefined');
+  });
+});

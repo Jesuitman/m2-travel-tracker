@@ -18,11 +18,15 @@ export function fetchDestinations() {
 
 export function postNewTrip(newTrip) {
   return fetch("http://localhost:3001/api/v1/trips", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newTrip),
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newTrip),
   })
-  .then((response) => response.json());
+    .then((response) => response.json())
+    .then(() => {
+      // After posting the new trip, fetch the updated list of trips
+      return fetchTrips();
+    });
 }

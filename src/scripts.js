@@ -32,6 +32,7 @@ import './css/styles.css';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/turing-logo.png'
+import './images/red-dot-cursor.png'
 function fetchAllData(){
     Promise.all([fetchTravelers(),fetchTrips(),fetchDestinations()])
     .then(([travelersData, tripsData, destinationsData]) =>{
@@ -74,17 +75,19 @@ function displayTrips(userId, status) {
                 tripsSection.appendChild(tripList);
             }
         };
-   clownMusic.play
+
 
 document.getElementById("loginForm").addEventListener("submit", function (event) {
     event.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    if (username === "clown") {
+        return clownMode();
+    }
 
     if (password !== "travel"){
         alert("Invalid password, please use 'travel' as your password to continue")
-     
         return
     }
     userId = parseInt(username.match(/\d+/)[0]);
@@ -214,4 +217,45 @@ function displayAllTripData(userId){
     displayTrips(userId,"pending")
     displayTrips(userId,"past")
     updateCostBox(userId)
+}
+let randomFontSize
+function clownMode() {
+    document.body.style.cursor = 'url(./images/red-dot-cursor.png), auto';
+    // clownMusic.play(); 
+    document.body.style.backgroundColor = 'purple';
+    
+    setRandomFontSize();
+    playClownMusic()
+    setInterval(playClownMusic, 1)
+
+    setInterval(toggleColorSwap, 200);
+    setInterval(setRandomFontSize, 200);
+}
+
+function toggleColorSwap() {
+    const body = document.body;
+    const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, li');
+    
+    if (body.style.backgroundColor === 'purple') {
+        body.style.backgroundColor = 'hotpink';
+        allTextElements.forEach((element) => {
+            element.style.color = 'purple';
+        });
+    } else {
+        body.style.backgroundColor = 'purple';
+        allTextElements.forEach((element) => {
+            element.style.color = 'hotpink';
+        });
+    }
+}
+
+function setRandomFontSize() {
+    randomFontSize = Math.floor(Math.random() * 36) + 5;
+    const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, li');
+    allTextElements.forEach((element) => {
+        element.style.fontSize = `${randomFontSize}px`;
+    });
+}
+function playClownMusic(){
+    clownMusic.play()
 }

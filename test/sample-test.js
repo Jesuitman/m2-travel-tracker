@@ -31,10 +31,16 @@ export function calculateTotalCostForUser(userId) {
   return totalCost;
 }
 
-function formatTripDate(date) {
+export function formatTripDate(date) {
   const parts = date.split("-");
   return `${parts[0]}/${parts[1]}/${parts[2]}`;  
 }
+
+export function isTripInYear(trip, year) {
+  const tripDate = new Date(trip.date);
+  return tripDate.getFullYear() === year;
+}
+
 
 let userId = 1
 let travelers = [{
@@ -173,5 +179,29 @@ describe('formatTripDate', function() {
     const date = '2023/11/11';
     const formattedDate = formatTripDate(date);
     expect(formattedDate).to.equal('2023/11/11/undefined/undefined');
+  });
+});
+
+describe('isTripInYear', () => {
+  beforeEach(() => {
+    // You can reset or modify the 'trips' array before each test if needed
+  });
+
+  it('should return true when the trip year matches the provided year', () => {
+    const trip = trips[0]; // Using the first trip
+    const year = 2019;
+
+    const result = isTripInYear(trip, year);
+
+    expect(result).to.be.true;
+  });
+
+  it('should return false when the trip year does not match the provided year', () => {
+    const trip = trips[1]; // Using the second trip
+    const year = 2022;
+
+    const result = isTripInYear(trip, year);
+
+    expect(result).to.be.false;
   });
 });

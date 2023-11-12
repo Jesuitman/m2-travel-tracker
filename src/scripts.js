@@ -1,7 +1,6 @@
 // This is the JavaScript entry file - your code begins here
 // Do not delete or rename this file ********
 import { fetchTravelers,fetchTrips,fetchDestinations,postNewTrip } from './api-calls';
-import "./images/circus.wav"
 // query Selectors
 const loginForm = document.getElementById("loginForm");
 const costsTripsSection = document.querySelector('.costs-dashboard-section');
@@ -10,6 +9,20 @@ const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
 const clownMusic = new Audio("./images/circus.wav")
+const tone = new Audio("./images/tone.wav")
+const clowns = ["./images/sadclown.png","./images/sadclown2.png",
+"./images/sadclown3.png","./images/sadclown4.png",
+"./images/sadclown5.png","./images/sadclown6.png"]
+
+import "./images/circus.wav"
+import "./images/tone.wav"
+import './images/turing-logo.png'
+import './images/sadclown.png'
+import './images/sadclown2.png'
+import './images/sadclown3.png'
+import './images/sadclown4.png'
+import './images/sadclown5.png'
+import './images/sadclown6.png'
 
 function showElement(element) {
     element.style.display = "block";
@@ -26,13 +39,13 @@ let travelers
 let userId
 let trips
 let destinations = []
+let randomFontSize
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
-import './images/turing-logo.png'
-import './images/red-dot-cursor.png'
+
 function fetchAllData(){
     Promise.all([fetchTravelers(),fetchTrips(),fetchDestinations()])
     .then(([travelersData, tripsData, destinationsData]) =>{
@@ -42,7 +55,6 @@ function fetchAllData(){
     })
 }
 document.addEventListener("DOMContentLoaded", fetchAllData)
-
 
 function displayTrips(userId, status) {
     fetchAllData()
@@ -128,7 +140,7 @@ export function calculateCostOfTrip(trip) {
 }
 
 export function calculateTotalCostForUser(userId) {
-    const userTrips = trips.filter(trip => trip.userID === userId);
+    const userTrips = trips.filter(trip => trip.userID === userId && isTripInYear(trip, 2023));
     let totalCost = 0;
   
     userTrips.forEach(trip => {
@@ -139,15 +151,15 @@ export function calculateTotalCostForUser(userId) {
     return totalCost;
 }
 
+export function isTripInYear(trip, year) {
+    const tripDate = new Date(trip.date);
+    return tripDate.getFullYear() === year;
+}
+
 function updateCostBox(userId) {
     const totalCost = calculateTotalCostForUser(userId);  
 
     costsTripsSection.innerHTML = `<h3>Total Cost of Trips: $${totalCost}</h3>`;
-}
-  
-function getUserNameById(userId) {
-    const user = travelers.find(traveler => traveler.id === userId)
-    return user.name
 }
 
 newTripButton.addEventListener("click", () => {
@@ -207,7 +219,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 });
 
-function formatTripDate(date) {
+export function formatTripDate(date) {
     const parts = date.split("-");
     return `${parts[0]}/${parts[1]}/${parts[2]}`;  
 }
@@ -218,45 +230,37 @@ function displayAllTripData(userId){
     displayTrips(userId,"past")
     updateCostBox(userId)
 }
-let randomFontSize
+
 function clownMode() {
     document.documentElement.style.cursor = 'wait';
     document.body.style.cursor = 'wait';
-    // clownMusic.play(); 
     document.body.style.backgroundColor = 'purple';
     
-    setRandomFontSize();
     playClownMusic()
     setInterval(playClownMusic, 1)
 
-    setInterval(toggleColorSwap, 200);
-    setInterval(setRandomFontSize, 200);
+    setInterval(setRandomBackground, 200);
+    setInterval(setRandomFontSizeAndColor, 500);
 }
 
-function toggleColorSwap() {
-    const body = document.body;
+function setRandomFontSizeAndColor() {
     const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, li');
-    
-    if (body.style.backgroundColor === 'purple') {
-        body.style.backgroundColor = 'hotpink';
-        allTextElements.forEach((element) => {
-            element.style.color = 'purple';
-        });
-    } else {
-        body.style.backgroundColor = 'purple';
-        allTextElements.forEach((element) => {
-            element.style.color = 'hotpink';
-        });
-    }
-}
+    const randomFontSize = Math.floor(Math.random() * 36) + 5;
 
-function setRandomFontSize() {
-    randomFontSize = Math.floor(Math.random() * 36) + 5;
-    const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, li');
     allTextElements.forEach((element) => {
         element.style.fontSize = `${randomFontSize}px`;
+        const randomColor = Math.random() < 0.5 ? 'hotpink' : 'purple';
+        element.style.color = randomColor;
     });
 }
+
 function playClownMusic(){
     clownMusic.play()
+    tone.play()
+}
+
+function setRandomBackground() {
+    const randomImage = clowns[Math.floor(Math.random() * clowns.length)];
+
+    document.body.style.backgroundImage = `url('${randomImage}')`;
 }

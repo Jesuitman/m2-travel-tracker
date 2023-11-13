@@ -18,15 +18,15 @@ img {
 
 .dashboard {
   width: 75%;
-  height: 95vh; /* 95% of the viewport height */
+  height: 95vh; 
   background-color: aqua;
   border-radius: 10px;
   margin: 0 auto;
   text-align: center;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Equal width columns */
-  grid-template-rows: repeat(2, 1fr); /* Equal height rows */
-  gap: 5%; /* Adjust the gap between sections */
+  grid-template-columns: repeat(2, 1fr); 
+  grid-template-rows: repeat(2, 1fr); 
+  gap: 5%; 
   display: none;
 }
 
@@ -126,4 +126,19 @@ img {
 
 #newTripForm button:hover {
   background-color: green; 
+}
+
+.rising-image {
+  position: absolute; 
+  animation: riseToTop 8s linear forwards; 
+  bottom: 0; 
+}
+
+@keyframes riseToTop {
+  0% {
+    bottom: 0; 
+  }
+  100% {
+    bottom: 100%; 
+  }
 }

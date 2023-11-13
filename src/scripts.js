@@ -58,7 +58,6 @@ function fetchAllData(){
 document.addEventListener("DOMContentLoaded", fetchAllData)
 
 function displayTrips(userId, status) {
-    fetchAllData()
     const tripsSection = document.querySelector(`.${status}-inner-dashboard-section`);
     
     
@@ -189,17 +188,14 @@ document.getElementById("newTripForm").addEventListener("submit", function (even
     };
 
         postNewTrip(newTrip)
-        .then((newTrip) => {
-            trips.push(newTrip);
-            displayAllTripData(userId)
-            // const estimatedCost = calculateCostOfTrip(data);
-    
-            // alert(`Estimated Cost for the Trip: $${estimatedCost}`);
+        .then(() => {
+            fetchTrips()
+            .then((tripsData)=>{
+                trips = tripsData
+                displayAllTripData(userId)})
             event.target.reset();
             hideElement(tripForm);
             showDashboard();
-        
-
         });
 });
 

@@ -7,7 +7,9 @@ export function fetchTravelers() {
 export function fetchTrips() {
   return fetch("http://localhost:3001/api/v1/trips")
       .then((response) => response.json())
-      .then((data) => data.trips);
+      .then((data) => {
+        console.log(data)
+        return data.trips});
 }
 
 export function fetchDestinations() {
@@ -25,9 +27,5 @@ export function postNewTrip(newTrip) {
     body: JSON.stringify(newTrip),
   })
   .then((response) => {
-    console.log(response)
-    response.json()})
-    .then(() => {
-      return fetchTrips();
-    });
-}
+    return response.json()})
+    };

@@ -9,6 +9,7 @@ const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
 const clownMusic = new Audio("./images/circus.wav")
+const rick = new Audio("./images/rick.wav")
 const tone = new Audio("./images/tone.wav")
 const clowns = ["./images/sadclown.png","./images/sadclown2.png",
 "./images/sadclown3.png","./images/sadclown4.png",
@@ -16,13 +17,14 @@ const clowns = ["./images/sadclown.png","./images/sadclown2.png",
 
 import "./images/circus.wav"
 import "./images/tone.wav"
-import './images/turing-logo.png'
 import './images/sadclown.png'
 import './images/sadclown2.png'
 import './images/sadclown3.png'
 import './images/sadclown4.png'
 import './images/sadclown5.png'
 import './images/sadclown6.png'
+import "./images/rick.wav"
+import "./images/Popup.png"
 
 function showElement(element) {
     element.style.display = "block";
@@ -39,7 +41,6 @@ let travelers
 let userId
 let trips
 let destinations = []
-let randomFontSize
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/styles.css';
@@ -99,6 +100,7 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
     }
 
     if (password !== "travel"){
+        rick.play()
         alert("Invalid password, please use 'travel' as your password to continue")
         return
     }
@@ -234,7 +236,6 @@ function displayAllTripData(userId){
 function clownMode() {
     document.documentElement.style.cursor = 'wait';
     document.body.style.cursor = 'wait';
-    document.body.style.backgroundColor = 'purple';
     
     playClownMusic()
     setInterval(playClownMusic, 1)

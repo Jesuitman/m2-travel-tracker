@@ -24,9 +24,10 @@ export function postNewTrip(newTrip) {
     },
     body: JSON.stringify(newTrip),
   })
-    .then((response) => response.json())
+  .then((response) => {
+    console.log(response)
+    response.json()})
     .then(() => {
-      // After posting the new trip, fetch the updated list of trips
       return fetchTrips();
     });
 }

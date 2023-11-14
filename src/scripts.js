@@ -8,6 +8,7 @@ const dashboardTitle = document.querySelector('.dashboard-title')
 const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
+import './css/styles.css';
 
 function showElement(element) {
     element.style.display = "block";

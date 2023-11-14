@@ -11,19 +11,19 @@
 <body>
   <section class="dashboard">
     <h2 class="dashboard-title">Hello User!</h2>
-    <div class="pending-dashboard-section">
+    <section class="pending-dashboard-section">
       <h3 class="section-title">Pending Trips</h3>
-      <div class="pending-inner-dashboard-section"></div>
-  </div>
-  <div class="approved-dashboard-section">
+      <article class="pending-inner-dashboard-section"></article>
+    </section>
+  <section class="approved-dashboard-section">
       <h3 class="section-title">Approved Trips</h3>
-      <div class="approved-inner-dashboard-section"></div>
-  </div>
-  <div class="past-dashboard-section">
+      <article class="approved-inner-dashboard-section"></article>
+  </section>
+  <section class="past-dashboard-section">
       <h3 class="section-title">Past Trips</h3>
-      <div class="past-inner-dashboard-section"></div>
-  </div>
-    <div class="costs-dashboard-section">Costs</div>
+      <article class="past-inner-dashboard-section"></article>
+  </section>
+    <article class="costs-dashboard-section">Costs</article>
     <button id="scheduleTripButton">Schedule New Trip</button>
   </section>
   <form id="newTripForm">
@@ -48,7 +48,6 @@
     <button type="submit">Submit Trip Request</button>
   </form>
   <section class="login-form">
-
     <form id="loginForm">
       <h1 id="welcomeMessage">Welcome Travelers! Please log in</h1>
       <label for="username">Username:</label>
@@ -61,6 +60,5 @@
     </form>
     </section>
     <script src="bundle.js"></script>
-    
 </body>
 </html>

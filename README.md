@@ -20,7 +20,7 @@ Testing is a crucial aspect of this project, with an emphasis on testing pure fu
 ## 📷 Preview of App
 ![sample video of the project](https://github.com/Jesuitman/m2-travel-tracker/blob/main/Travel%20Tracker%20gif.gif)
 ## 🍎 Context
-The first two days I worked on the project it took me a while because I was approaching it in a way that wasnt conducive to my working style. I worked from scratch and this time when I worked I built out hardcoded variables that enabled me to build functions out piece by piece. I hit a major stopping point with a bug but was able to overcome it with the help of a Teacher. Overall, I spent close to 30 hours on the project.
+The first two days I worked on the project, it took me a while because I was approaching it in a way that wasn't conducive to my working style. I worked from scratch, and this time when I worked I built out hardcoded variables that enabled me to build functions out piece by piece. I hit a major stopping point with a bug, but was able to overcome it with the help of a teacher. Overall, I spent close to 30 hours on the project.
 
 ## 🧠 Contributors
 Lex

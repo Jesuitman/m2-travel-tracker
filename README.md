@@ -60,4 +60,13 @@ I experienced a bug where I couldnt get the new data to populate into the trips 
 ## 📝 Observations && ❓ Questions
 I had to completely change all of my mindset when it came to working with API because I hit several bumps that made me rethink how I was importing variables
 
+## Instructions for the User Test
+1. Follow readme instructions to get the project up and running
+2. Use travel10 as a username, travel as a password. 
+3. You will see various trips pop up! Scroll through and see what trips are pending, costs of trips, and all past trips. 
+4. Schedule a trip. Add as many travelers as you want! Add as many days as you would like!
+5. Select any destination from the dropdown menu 
+6. When you click submit, you should see your new trip in the pending trips section as well as the cost field updated to show you how much you'll be spending.
+
+
 ## Results from the User Test:

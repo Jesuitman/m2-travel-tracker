@@ -8,24 +8,6 @@ const dashboardTitle = document.querySelector('.dashboard-title')
 const newTripButton = document.querySelector("#scheduleTripButton");
 const tripForm = document.querySelector("#newTripForm");
 const dashboard = document.querySelector(".dashboard")
-const clownMusic = new Audio("./images/circus.wav")
-const rick = new Audio("./images/rick.wav")
-const tone = new Audio("./images/tone.wav")
-const clowns = ["./images/sadclown.png","./images/sadclown2.png",
-"./images/sadclown3.png","./images/sadclown4.png",
-"./images/sadclown5.png","./images/sadclown6.png"]
-
-import "./images/circus.wav"
-import "./images/tone.wav"
-import './images/sadclown.png'
-import './images/sadclown2.png'
-import './images/sadclown3.png'
-import './images/sadclown4.png'
-import './images/sadclown5.png'
-import './images/sadclown6.png'
-import "./images/rick.wav"
-import "./images/Popup.png"
-import './css/styles.css';
 
 function showElement(element) {
     element.style.display = "block";
@@ -89,12 +71,8 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
-    if (username === "clown") {
-        return clownMode();
-    }
 
     if (password !== "travel"){
-        rick.play()
         alert("Invalid password, please use 'travel' as your password to continue")
         return
     }
@@ -226,37 +204,4 @@ function displayAllTripData(userId){
     displayTrips(userId,"pending")
     displayTrips(userId,"past")
     updateCostBox(userId)
-}
-
-function clownMode() {
-    document.documentElement.style.cursor = 'wait';
-    document.body.style.cursor = 'wait';
-    
-    playClownMusic()
-    setInterval(playClownMusic, 1)
-
-    setInterval(setRandomBackground, 200);
-    setInterval(setRandomFontSizeAndColor, 500);
-}
-
-function setRandomFontSizeAndColor() {
-    const allTextElements = document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div, a, li');
-    const randomFontSize = Math.floor(Math.random() * 36) + 5;
-
-    allTextElements.forEach((element) => {
-        element.style.fontSize = `${randomFontSize}px`;
-        const randomColor = Math.random() < 0.5 ? 'hotpink' : 'purple';
-        element.style.color = randomColor;
-    });
-}
-
-function playClownMusic(){
-    clownMusic.play()
-    tone.play()
-}
-
-function setRandomBackground() {
-    const randomImage = clowns[Math.floor(Math.random() * clowns.length)];
-
-    document.body.style.backgroundImage = `url('${randomImage}')`;
 }

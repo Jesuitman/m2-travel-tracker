@@ -25,6 +25,7 @@ import './images/sadclown5.png'
 import './images/sadclown6.png'
 import "./images/rick.wav"
 import "./images/Popup.png"
+import './css/styles.css';
 
 function showElement(element) {
     element.style.display = "block";
@@ -37,15 +38,11 @@ function showDashboard(){
 function hideElement(element) {
     element.style.display = "none";
 }
+
 let travelers
 let userId
 let trips
 let destinations = []
-
-// An example of how you tell webpack to use a CSS (SCSS) file
-import './css/styles.css';
-
-// An example of how you tell webpack to use an image (also need to link to it in the index.html)
 
 function fetchAllData(){
     Promise.all([fetchTravelers(),fetchTrips(),fetchDestinations()])
@@ -55,11 +52,11 @@ function fetchAllData(){
         destinations = destinationsData
     })
 }
+
 document.addEventListener("DOMContentLoaded", fetchAllData)
 
 function displayTrips(userId, status) {
     const tripsSection = document.querySelector(`.${status}-inner-dashboard-section`);
-    
     
     const filteredTrips = trips.filter((trip) => trip.userID === userId && trip.status === status);
     
@@ -68,7 +65,6 @@ function displayTrips(userId, status) {
     } else {
         const tripContainer = document.createElement('div');
         tripContainer.classList.add('trip-container');
-
         filteredTrips.forEach((trip) => {
             const cost = calculateCostOfTrip(trip);
             const tripItem = document.createElement('div');
@@ -80,14 +76,12 @@ function displayTrips(userId, status) {
                 <p>Number of Travelers: ${trip.travelers}</p>
                 <p>Cost of the Trip: $${cost}</p>
             `;
-
             tripContainer.appendChild(tripItem);
         });
-
-        tripsSection.innerHTML = "";
-        tripsSection.appendChild(tripContainer);
-            }
-        };
+    tripsSection.innerHTML = "";
+    tripsSection.appendChild(tripContainer);
+    }
+};
 
 
 document.getElementById("loginForm").addEventListener("submit", function (event) {
@@ -125,9 +119,9 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 
             displayAllTripData(userId)
         })
-        .catch((error) => {
-            console.log(error);
-        });
+    .catch((error) => {
+        console.log(error);
+    });
 });
 export function calculateCostOfTrip(trip) {
     const destination = destinations.find(dest => dest.id === trip.destinationID);
@@ -150,7 +144,6 @@ export function calculateTotalCostForUser(userId) {
         const costOfTrip = calculateCostOfTrip(trip);
         totalCost += costOfTrip;
     });
-  
     return totalCost;
 }
 
@@ -161,7 +154,6 @@ export function isTripInYear(trip, year) {
 
 function updateCostBox(userId) {
     const totalCost = calculateTotalCostForUser(userId);  
-
     costsTripsSection.innerHTML = `<h3>Projected Cost of Trips for the year: $${totalCost}</h3>`;
 }
 
@@ -212,16 +204,16 @@ document.addEventListener("DOMContentLoaded", () => {
         .then((data) => {
             destinations = data.destinations;
             
-            const destinationSelect = document.getElementById("destination");
-            destinationSelect.innerHTML = destinations
-                .map((destination) => {
-                    return `<option value="${destination.id}">${destination.destination}</option>`;
-                })
-                .join("");
+        const destinationSelect = document.getElementById("destination");
+        destinationSelect.innerHTML = destinations
+            .map((destination) => {
+                return `<option value="${destination.id}">${destination.destination}</option>`;
+            })
+            .join("");
         })
-        .catch((error) => {
-            console.error("Failed to fetch destinations:", error);
-        });
+    .catch((error) => {
+        console.error("Failed to fetch destinations:", error);
+    });
 });
 
 export function formatTripDate(date) {

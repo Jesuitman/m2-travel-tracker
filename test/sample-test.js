@@ -1,7 +1,5 @@
 import chai from 'chai';
 const expect = chai.expect;
-// import {calculateCostOfTrip} from "./scripts.js"
-// const {calculateCostOfTrip,calculateTotalCostForUser} = require  ("./scripts.js") 
 describe('See if the tests are running', function() {
   it('should return true', function() {
     expect(true).to.equal(true);
@@ -184,11 +182,10 @@ describe('formatTripDate', function() {
 
 describe('isTripInYear', () => {
   beforeEach(() => {
-    // You can reset or modify the 'trips' array before each test if needed
   });
 
   it('should return true when the trip year matches the provided year', () => {
-    const trip = trips[0]; // Using the first trip
+    const trip = trips[0]; 
     const year = 2019;
 
     const result = isTripInYear(trip, year);
@@ -197,7 +194,7 @@ describe('isTripInYear', () => {
   });
 
   it('should return false when the trip year does not match the provided year', () => {
-    const trip = trips[1]; // Using the second trip
+    const trip = trips[1]; 
     const year = 2022;
 
     const result = isTripInYear(trip, year);

@@ -8,7 +8,6 @@ export function fetchTrips() {
   return fetch("http://localhost:3001/api/v1/trips")
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
         return data.trips});
 }
 

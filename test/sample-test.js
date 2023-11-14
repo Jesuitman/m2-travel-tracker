@@ -12,8 +12,9 @@ export function calculateCostOfTrip(trip) {
   const estimatedLodgingCostPerDay = destination.estimatedLodgingCostPerDay;
   const duration = trip.duration;
   
-  const costOfTrip = (travelers * estimatedFlightCostPerPerson) + (travelers * estimatedLodgingCostPerDay * duration) * 1.1;
-  
+  let costOfTrip = (travelers * estimatedFlightCostPerPerson) + (travelers * estimatedLodgingCostPerDay * duration) * 1.1;
+  costOfTrip = parseFloat(costOfTrip.toFixed(2));
+
   return costOfTrip;
 }
 

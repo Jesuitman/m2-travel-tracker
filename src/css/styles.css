@@ -1,7 +1,6 @@
 body {
   background-color: aqua;
-  font-family: "Comic Sans MS", cursive;
-}
+font-family: Verdana, Geneva, Tahoma, sans-serif ;}
 
 img {
   width: 250px;
@@ -27,6 +26,7 @@ img {
   grid-template-columns: repeat(2, 1fr); 
   grid-template-rows: repeat(2, 1fr); 
   gap: 5%; 
+  margin-top: 7.5%;
   display: none;
 }
 
@@ -51,22 +51,27 @@ img {
   align-items: center;
   font-size: 16px; /* Adjust the font size as needed */
   padding: 10px;
+  margin-left: 0%;
 }
 
 .past-dashboard-section{
   background-color: #f8d200; 
+  border-radius: 25px;
 }
 
 .pending-dashboard-section{
   background-color: #00cc5a; 
+  border-radius: 25px;
 }
 
 .approved-dashboard-section{
   background-color: #ff4c52; 
+  border-radius: 25px;
 }
 
 .costs-dashboard-section{
   background-color: #954e50; 
+  border-radius: 25px;
 }
 
 #scheduleTripButton {
@@ -79,6 +84,8 @@ img {
   position: fixed;
   top: 2px;
   right: 2px;
+  width: 10%;
+  border-radius: 15px;
 }
 
 
@@ -141,4 +148,16 @@ img {
   100% {
     bottom: 100%; 
   }
+}
+
+.trip-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.trip-item {
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
 }

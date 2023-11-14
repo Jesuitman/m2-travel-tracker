@@ -66,25 +66,26 @@ function displayTrips(userId, status) {
     if (filteredTrips.length === 0) {
         tripsSection.innerHTML = `<p>No ${status} trips at the moment.</p>`;
     } else {
-        const tripList = document.createElement('ul');
-        tripList.classList.add('trip-list');
-        
-                filteredTrips.forEach((trip) => {
-                    const cost = calculateCostOfTrip(trip);
-                    const tripItem = document.createElement('li');
-                    tripItem.innerHTML = `
-                        <h3>Trip to ${destinations.find(dest => dest.id === trip.destinationID).destination}</h3>
-                        <p>Date: ${trip.date}</p>
-                        <p>Duration: ${trip.duration} days</p>
-                        <p>Number of Travelers: ${trip.travelers}</p>
-                        <p>Cost of the Trip: ${cost} dollars</p>
-                    `;
+        const tripContainer = document.createElement('div');
+        tripContainer.classList.add('trip-container');
 
-                    tripList.appendChild(tripItem);
-                });
+        filteredTrips.forEach((trip) => {
+            const cost = calculateCostOfTrip(trip);
+            const tripItem = document.createElement('div');
+            tripItem.classList.add('trip-item');
+            tripItem.innerHTML = `
+                <h3>Trip to ${destinations.find(dest => dest.id === trip.destinationID).destination}</h3>
+                <p>Date: ${trip.date}</p>
+                <p>Duration: ${trip.duration} days</p>
+                <p>Number of Travelers: ${trip.travelers}</p>
+                <p>Cost of the Trip: $${cost}</p>
+            `;
 
-                tripsSection.innerHTML = "";
-                tripsSection.appendChild(tripList);
+            tripContainer.appendChild(tripItem);
+        });
+
+        tripsSection.innerHTML = "";
+        tripsSection.appendChild(tripContainer);
             }
         };
 
@@ -135,7 +136,8 @@ export function calculateCostOfTrip(trip) {
     const estimatedLodgingCostPerDay = destination.estimatedLodgingCostPerDay;
     const duration = trip.duration;
     
-    const costOfTrip = (travelers * estimatedFlightCostPerPerson) + (travelers * estimatedLodgingCostPerDay * duration) * 1.1;
+    let costOfTrip = (travelers * estimatedFlightCostPerPerson) + (travelers * estimatedLodgingCostPerDay * duration) * 1.1;
+    costOfTrip = parseFloat(costOfTrip.toFixed(2));
     
     return costOfTrip;
 }
@@ -160,7 +162,7 @@ export function isTripInYear(trip, year) {
 function updateCostBox(userId) {
     const totalCost = calculateTotalCostForUser(userId);  
 
-    costsTripsSection.innerHTML = `<h3>Total Cost of Trips: $${totalCost}</h3>`;
+    costsTripsSection.innerHTML = `<h3>Projected Cost of Trips for the year: $${totalCost}</h3>`;
 }
 
 newTripButton.addEventListener("click", () => {
@@ -169,8 +171,10 @@ newTripButton.addEventListener("click", () => {
 })
 
 document.getElementById("newTripForm").addEventListener("submit", function (event) {
+    let currentDate = new Date()
     event.preventDefault();
     const tripDateInput = document.getElementById("tripDate")
+    let tripDateCompare = new Date(tripDateInput.value)
     const tripDate = formatTripDate(tripDateInput.value)
     const tripDuration = parseInt(document.getElementById("tripDuration").value);
     const numTravelers = parseInt(document.getElementById("travelers").value);
@@ -186,7 +190,10 @@ document.getElementById("newTripForm").addEventListener("submit", function (even
         status: "pending",
         suggestedActivities: [],
     };
-
+    if (tripDateCompare < currentDate){
+        alert("Sorry! You can't schedule a trip in the past!")
+        return
+    }
         postNewTrip(newTrip)
         .then(() => {
             fetchTrips()

@@ -6,15 +6,15 @@ The application leverages technologies such as the Fetch API for data retrieval 
 Testing is a crucial aspect of this project, with an emphasis on testing pure functions and covering various test cases. Additionally, accessibility is a key focus, with the aim of achieving a near-perfect score on the Lighthouse Accessibility Audit. This Travel Tracker application offers a comprehensive solution for travelers and travel agencies to efficiently manage and track trips, promoting a seamless and user-friendly travel planning experience.
 
 ## 💻 Installation instructions
-1. Clone the project from my github
-2. Clone down the API from this link: https://github.com/turingschool-examples/travel-tracker-api
-3. Open terminal and run `git clone` followed by the links you get from both clone links on Github
-4. Navigate to the file directory where travel tracker was cloned into and run npm install
+1. Clone the project from my github.
+2. Clone down the API from this link: https://github.com/turingschool-examples/travel-tracker-api.
+3. Open terminal and run `git clone` followed by the links you get from both clone links on Github.
+4. Navigate to the file directory where travel tracker was cloned into and run npm install.
 5. Run npm start on the travel tracker. 
-6. Copy the link that it gives yo utaht should look something like `http://localhost:8080/`
-7. It should display the project but not be able to do anything. This is normal
-8. Run npm install on the API directory
-9. Run npm start in the API directory
+6. Copy the link that it gives you that should look something like `http://localhost:8080/`.
+7. It should display the project but not be able to do anything. This is normal.
+8. Run npm install on the API directory.
+9. Run npm start in the API directory.
 10. Navigate back to the 8080 link and you should see that the project is working upon logging in! 
 
 ## 📷 Preview of App
@@ -70,3 +70,11 @@ I had to completely change all of my mindset when it came to working with API be
 
 
 ## Results from the User Test:
+- User noticed typo in readme, fixed
+- Change cost of trips to be in year instead of just cost of trips, fixed
+- Adjust header for title name, fixed
+- Add bottom border for past and cost boxes, fixed
+- Add rounding for costs to only the first two digits after the ., fixed
+- Remove the bullet point from each trip, fixed
+- User shouldn’t be able to schedule trips in the past, fixed
+- User hates comic sans, fixed

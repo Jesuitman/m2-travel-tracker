@@ -2,10 +2,6 @@ body {
   background-color: aqua;
 font-family: Verdana, Geneva, Tahoma, sans-serif ;}
 
-img {
-  width: 250px;
-  height: 500px;
-}
 
 .login-form {
   text-align: center;
@@ -133,21 +129,6 @@ img {
 
 #newTripForm button:hover {
   background-color: green; 
-}
-
-.rising-image {
-  position: absolute; 
-  animation: riseToTop 8s linear forwards; 
-  bottom: 0; 
-}
-
-@keyframes riseToTop {
-  0% {
-    bottom: 0; 
-  }
-  100% {
-    bottom: 100%; 
-  }
 }
 
 .trip-container {
